@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         addpp
-// @version      0.5
+// @version      0.6
 // @description  look how much pp someone would have if they made a new score with x pp.
 // @author       Nodebuck
 // @match        *://osu.ppy.sh/u/*
@@ -40,12 +40,11 @@ $(function(){
         var user = userId;
 
         var start = Date.now();
-        $.get("https://osu.ppy.sh/api/get_user?k=" + api_key + "&u=" + user, function(body){
-            if(body.error){
+        $.ajax("https://osu.ppy.sh/api/get_user?k=" + api_key + "&u=" + user, {type: "get", error: function(jqXHR, exception){
                 GM_setValue("api_key", "");
-                $("#add_pp_container").html("<b>" + body.error + "</b>");
+                $("#add_pp_container").html("<b>Error: " + JSON.parse(jqXHR.responseText)["error"] + "</b>");
                 return;
-            } 
+            }, success: function(body){
             start = Date.now();
             var json = body;
             pp_full = parseFloat(json[0].pp_raw);
@@ -87,6 +86,6 @@ $(function(){
                 console.log("Added pp: " + pp_to_add + " -> " + (pp_no_bonus - pp_full).toFixed(1));
                 console.log("Result: " + pp_no_bonus.toFixed(1));
             });
-        });
+        }});
     }));
 });
