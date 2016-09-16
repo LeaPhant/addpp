@@ -4,6 +4,7 @@
 // @description  look how much pp someone would have if they made a new score with x pp.
 // @author       Nodebuck
 // @match        *://osu.ppy.sh/u/*
+// @updateURL    https://github.com/Nodebuck/addpp/raw/master/addpp.user.js
 // @grant GM_setValue
 // @grant GM_getValue
 // ==/UserScript==
