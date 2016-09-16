@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         addpp
-// @version      0.3
+// @version      0.4
 // @description  look how much pp someone would have if they made a new score with x pp.
 // @author       Nodebuck
 // @match        *://osu.ppy.sh/u/*
