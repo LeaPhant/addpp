@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         addpp
-// @version      0.4
+// @version      0.5
 // @description  look how much pp someone would have if they made a new score with x pp.
 // @author       Nodebuck
 // @match        *://osu.ppy.sh/u/*
@@ -27,7 +27,7 @@ $(function(){
         if(!api_key){
           api_key = prompt("Enter your API key");
           if(api_key === null) return;
-            GM_setValue("api_key", api_key.toString());
+          else GM_setValue("api_key", api_key.toString());
         }
         var pp = 0, pp_full = 0, pp_no_bonus = 0, max = 0, pp_to_add = 0;
         var pp_array, pp_array_new = [];
@@ -41,6 +41,11 @@ $(function(){
 
         var start = Date.now();
         $.get("https://osu.ppy.sh/api/get_user?k=" + api_key + "&u=" + user, function(body){
+            if(body.error){
+                GM_setValue("api_key", "");
+                $("#add_pp_container").html("<b>" + body.error + "</b>");
+                return;
+            } 
             start = Date.now();
             var json = body;
             pp_full = parseFloat(json[0].pp_raw);
