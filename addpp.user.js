@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         addpp
-// @version      0.7.2
+// @version      0.7.3
 // @description  look up how much pp someone would have if they made a new score with x pp.
 // @author       Nodebuck
 // @match        *://osu.ppy.sh/u/*
@@ -64,12 +64,10 @@ $(function(){
 
                     //console.log(current_pp + " - " + current_pp_weighted + " - " + current_factor);
                 });
-                
-                console.log(pp_full);
-                
-                if(pp_full < 0 || !pp_full){ pp_full = 0; no_bonus_pp = true; }
 
                 pp_no_bonus = pp_full - pp;
+                
+                if(pp_no_bonus < 0 || !pp_full){ pp_no_bonus = 0; no_bonus_pp = true; }
 
                 pp_array.push({pp: pp_to_add});
                 pp_array.sort(compare);
