@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         addpp
-// @version      0.6
-// @description  look how much pp someone would have if they made a new score with x pp.
+// @version      0.7
+// @description  look up how much pp someone would have if they made a new score with x pp.
 // @author       Nodebuck
 // @match        *://osu.ppy.sh/u/*
 // @updateURL    https://github.com/Nodebuck/addpp/raw/master/addpp.user.js
@@ -15,7 +15,7 @@ function compare(a,b){
     return 0;
 }
 
-function numberWithCommas(x) {
+function numberWithCommas(x){
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
@@ -31,6 +31,7 @@ $(function(){
         }
         var pp = 0, pp_full = 0, pp_no_bonus = 0, max = 0, pp_to_add = 0;
         var pp_array, pp_array_new = [];
+        var no_bonus_pp = false;
         pp_to_add = prompt("Enter pp to add");
         
         if(pp_to_add === null) return;
@@ -75,12 +76,21 @@ $(function(){
                     var current_factor = Math.pow(0.95, index);
                     var current_pp_weighted = current_pp * current_factor;
 
+                    if(pp_no_bonus <= 0){
+                        pp_no_bonus = 0;
+                        no_bonus_pp = true;
+                    }
+                    
                     pp_no_bonus += current_pp_weighted;
 
                     //console.log(current_pp + " - " + current_pp_weighted + " - " + current_factor);
                 });
                 
-                $("#add_pp_container").html("<b>New Performance: " + numberWithCommas(pp_no_bonus.toFixed(0)) + "pp (when a " + numberWithCommas(pp_to_add) + "pp score is achieved)</b>");
+                if(pp_no_bonus){
+                    $("#add_pp_container").html("<b>New Performance: " + numberWithCommas(pp_no_bonus.toFixed(0)) + "pp (when a " + numberWithCommas(pp_to_add) + "pp score is achieved - no bonus pp included, user not active)</b>");
+                }else{
+                    $("#add_pp_container").html("<b>New Performance: " + numberWithCommas(pp_no_bonus.toFixed(0)) + "pp (when a " + numberWithCommas(pp_to_add) + "pp score is achieved)</b>");
+                }
 
                 console.log("Current pp: " + pp_full);
                 console.log("Added pp: " + pp_to_add + " -> " + (pp_no_bonus - pp_full).toFixed(1));
