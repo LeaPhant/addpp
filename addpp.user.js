@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         addpp
-// @version      0.7
+// @version      0.7.1
 // @description  look up how much pp someone would have if they made a new score with x pp.
 // @author       Nodebuck
 // @match        *://osu.ppy.sh/u/*
@@ -64,6 +64,8 @@ $(function(){
 
                     //console.log(current_pp + " - " + current_pp_weighted + " - " + current_factor);
                 });
+                
+                if(pp_full < 0){ pp_full = 0; no_bonus_pp = true; }
 
                 pp_no_bonus = pp_full - pp;
 
@@ -75,11 +77,6 @@ $(function(){
                     var current_pp = parseFloat(value.pp);
                     var current_factor = Math.pow(0.95, index);
                     var current_pp_weighted = current_pp * current_factor;
-
-                    if(pp_no_bonus <= 0){
-                        pp_no_bonus = 0;
-                        no_bonus_pp = true;
-                    }
                     
                     pp_no_bonus += current_pp_weighted;
 
@@ -87,9 +84,9 @@ $(function(){
                 });
                 
                 if(pp_no_bonus){
-                    $("#add_pp_container").html("<b>New Performance: " + numberWithCommas(pp_no_bonus.toFixed(0)) + "pp (when a " + numberWithCommas(pp_to_add) + "pp score is achieved - no bonus pp included, user not active)</b>");
+                    $("#add_pp_container").html("<b>New Performance: " + numberWithCommas(pp_no_bonus.toFixed(0)) + "pp (when a " + numberWithCommas(pp_to_add) + "pp score is achieved - no bonus pp included, user not active)</b>").attr("id", "");
                 }else{
-                    $("#add_pp_container").html("<b>New Performance: " + numberWithCommas(pp_no_bonus.toFixed(0)) + "pp (when a " + numberWithCommas(pp_to_add) + "pp score is achieved)</b>");
+                    $("#add_pp_container").html("<b>New Performance: " + numberWithCommas(pp_no_bonus.toFixed(0)) + "pp (when a " + numberWithCommas(pp_to_add) + "pp score is achieved)</b>").attr("id", "");
                 }
 
                 console.log("Current pp: " + pp_full);
